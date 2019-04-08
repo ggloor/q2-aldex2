@@ -20,7 +20,7 @@ setup(
     license='GPLv3',
     url="https://www.bioconductor.org/packages/devel/bioc/html/ALDEx2.html",
     entry_points={
-        'qiime2.plugins': ['q2-gneiss=q2_gneiss.plugin_setup:plugin']
+        'qiime2.plugins': ['q2-aldex2=q2_aldex2.plugin_setup:plugin']
     },
     scripts=['q2_aldex2/assets/run_aldex2.R'],
     package_data={
