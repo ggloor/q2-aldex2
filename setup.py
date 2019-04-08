@@ -22,6 +22,7 @@ setup(
     entry_points={
         'qiime2.plugins': ['q2-gneiss=q2_gneiss.plugin_setup:plugin']
     },
+    scripts=['q2_aldex2/assets/run_aldex2.R'],
     package_data={
         "q2_aldex2": ['citations.bib'],
     },

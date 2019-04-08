@@ -1,8 +1,10 @@
+import os
 import qiime2
 import numpy as np
 import pandas as pd
 from biom import Table
 import tempfile
+import subprocess
 
 
 def run_commands(cmds, verbose=True):
@@ -23,7 +25,7 @@ def aldex2(output_dir: str,
            table: pd.DataFrame,
            metadata: qiime2.Metadata,
            condition: str,
-           mc_samples: int = 100,
+           mc_samples: int = 128,
            test: str = 't',
            denom: str = 'all') -> (pd.DataFrame, pd.DataFrame):
 
@@ -33,10 +35,11 @@ def aldex2(output_dir: str,
         summary_fp = os.path.join(temp_dir_name, 'output.summary.txt')
 
         table.to_csv(biom_fp, sep='\t')
-        metadata.to_csv(map_fp, sep='\t')
+        metadata.to_dataframe().to_csv(map_fp, sep='\t')
 
         cmd = ['run_aldex2.R', biom_fp, map_fp, condition, mc_samples,
                test, denom, summary_fp]
+        cmd = list(map(str, cmd))
 
         try:
             run_commands([cmd])
@@ -45,6 +48,6 @@ def aldex2(output_dir: str,
                             " in R (return code %d), please inspect stdout"
                             " and stderr to learn more." % e.returncode)
 
-        summary = pd.read_table(summary_fp, index_col=0)
+        summary = pd.read_csv(summary_fp, index_col=0)
         differentials = summary[['effect']]
         return differentials, summary
