@@ -127,7 +127,6 @@ class TestAldex2(unittest.TestCase):
         rel_table.index.name = 'sampleid'
         metadata.index.name = 'sampleid'
 
-        output_dir = 'test_output'
         table = rel_table
         metadata = qiime2.Metadata(metadata)
         condition = 'labels'
@@ -135,8 +134,9 @@ class TestAldex2(unittest.TestCase):
         test = 't'
         denom = 'all'
 
-        diff, summary = aldex2(output_dir, table, metadata,
-                               condition, mc_samples, test, denom)
+        # TODO : allow for summary type
+        diff = aldex2(table, metadata,
+                      condition, mc_samples, test, denom)
 
         res = pearsonr(diff.values.ravel(),
                        ground_truth.categorical.values.ravel())

@@ -21,13 +21,12 @@ def run_commands(cmds, verbose=True):
         subprocess.run(cmd, check=True)
 
 
-def aldex2(output_dir: str,
-           table: pd.DataFrame,
+def aldex2(table: pd.DataFrame,
            metadata: qiime2.Metadata,
            condition: str,
            mc_samples: int = 128,
            test: str = 't',
-           denom: str = 'all') -> (pd.DataFrame, pd.DataFrame):
+           denom: str = 'all') -> pd.DataFrame:
 
     with tempfile.TemporaryDirectory() as temp_dir_name:
         biom_fp = os.path.join(temp_dir_name, 'input.tsv.biom')
@@ -50,4 +49,5 @@ def aldex2(output_dir: str,
 
         summary = pd.read_csv(summary_fp, index_col=0)
         differentials = summary[['effect']]
-        return differentials, summary
+        # don't return summary for now (TODO!)
+        return differentials
