@@ -48,6 +48,9 @@ def aldex2(table: pd.DataFrame,
                             " and stderr to learn more." % e.returncode)
 
         summary = pd.read_csv(summary_fp, index_col=0)
-        differentials = summary[['effect']]
+        #differentials = summary[['effect']]
+	# hack to fix column name for features because aldex removes
+	#it in R because of row.names = 1
+        summary.index.name = "featureid"
         # don't return summary for now (TODO!)
-        return differentials
+        return summary

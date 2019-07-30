@@ -41,14 +41,15 @@ plugin.methods.register_function(
     },
     parameter_descriptions={
         'metadata': 'Sample metadata',
-        'condition': 'The experimental condition of interest.',
-        'mc_samples': 'The number of monte carlo samples',
+        'condition': 'Experimental descriptors to group samples',
+        'mc_samples': 'The number of monte carlo samples to be used',
         'test': 'The statistical test to run, options include `t`, or `glm`',
         'denom': 'The features used to decide a reference frame.'
     },
     output_descriptions={
         'differentials': 'The estimated per-feature differentials.'
     }
+
 )
 
 # TODO: Need to add a visualizer to summarize the aldex2 results
