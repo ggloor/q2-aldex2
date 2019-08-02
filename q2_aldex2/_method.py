@@ -51,6 +51,6 @@ def aldex2(table: pd.DataFrame,
         #differentials = summary[['effect']]
 	# hack to fix column name for features because aldex removes
 	#it in R because of row.names = 1
+
         summary.index.name = "featureid"
-        # don't return summary for now (TODO!)
         return summary

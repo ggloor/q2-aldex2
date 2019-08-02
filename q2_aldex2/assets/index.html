@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}q2-aldex2 : {{ plot_name }}{% endblock %}
+
+{% block head %}
+
+<style media="screen">
+    body {
+        overflow: hidden; /* hide rounding error in viewport calc */
+    }
+    iframe {
+        height: 100vh;
+        width: 100%;
+        border: none;
+    }
+    #q2templatesheader ~ .row > iframe {
+	height: calc(100vh - 85px);
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-md-12'>
+        <img src='./effect_plot.png'>
+    </div>
+</div>
+
+{% endblock %}

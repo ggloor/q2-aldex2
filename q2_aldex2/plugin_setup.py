@@ -6,6 +6,7 @@ from q2_types.feature_data import FeatureData, Differential
 
 import q2_aldex2
 from q2_aldex2._method import aldex2
+from ._visualizer import effect_plot
 
 
 # TODO: will need to fix the version number
@@ -51,5 +52,23 @@ plugin.methods.register_function(
     }
 
 )
+
+plugin.visualizers.register_function(
+    function=effect_plot,
+    inputs={'table': FeatureData[Differential]},
+    parameters={'type': Str},
+    input_descriptions={
+        'table': 'Output from aldex2 calculations'
+    },
+    parameter_descriptions={
+        'type': 'Choice of effect or MA plot'
+    },
+    name='Effect plots',
+    description=('Visually explore the relationship between difference between groups and within groups')
+)
+
+
+
+
 
 # TODO: Need to add a visualizer to summarize the aldex2 results
