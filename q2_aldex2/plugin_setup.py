@@ -1,5 +1,5 @@
 import qiime2
-from qiime2.plugin import (Str, Int, Choices, Citations,
+from qiime2.plugin import (Str, Int, Float, Choices, Citations,
                            Metadata, Categorical, Plugin)
 from q2_types.feature_table import FeatureTable, Frequency, Composition
 from q2_types.feature_data import FeatureData, Differential
@@ -56,12 +56,12 @@ plugin.methods.register_function(
 plugin.visualizers.register_function(
     function=effect_plot,
     inputs={'table': FeatureData[Differential]},
-    parameters={'type': Str},
+    parameters={'threshold': Float},
     input_descriptions={
         'table': 'Output from aldex2 calculations'
     },
     parameter_descriptions={
-        'type': 'Choice of effect or MA plot'
+        'threshold': 'Statistical significance cutoff'
     },
     name='Effect plots',
     description=('Visually explore the relationship between difference between groups and within groups')
