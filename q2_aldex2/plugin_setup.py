@@ -6,7 +6,7 @@ from q2_types.feature_data import FeatureData, Differential
 
 import q2_aldex2
 from q2_aldex2._method import aldex2
-from ._visualizer import effect_plot
+from q2_aldex2._visualizer import effect_plot
 
 
 # TODO: will need to fix the version number
@@ -53,15 +53,19 @@ plugin.methods.register_function(
 
 )
 
+effect_statistic_methods = list(q2_aldex2._visualizer._effect_statistic_functions)
+
 plugin.visualizers.register_function(
     function=effect_plot,
     inputs={'table': FeatureData[Differential]},
-    parameters={'threshold': Float},
+    parameters={'threshold': Float,
+                'test': Str % Choices(effect_statistic_methods)},
     input_descriptions={
         'table': 'Output from aldex2 calculations'
     },
     parameter_descriptions={
-        'threshold': 'Statistical significance cutoff'
+        'threshold': 'Statistical significance cutoff',
+        'test': 'Method of calculating significance, options include `welch` for Welchs T test or `wilcox` for Wilcox rank test.'
     },
     name='Effect plots',
     description=('Visually explore the relationship between difference between groups and within groups')
