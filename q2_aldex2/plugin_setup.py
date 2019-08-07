@@ -5,7 +5,7 @@ from q2_types.feature_table import FeatureTable, Frequency, Composition
 from q2_types.feature_data import FeatureData, Differential
 
 import q2_aldex2
-from q2_aldex2._method import aldex2
+from q2_aldex2._method import aldex2, extract_differences
 from q2_aldex2._visualizer import effect_plot
 
 
@@ -50,10 +50,35 @@ plugin.methods.register_function(
     output_descriptions={
         'differentials': 'The estimated per-feature differentials.'
     }
-
 )
 
+# get choices for test parameter
 effect_statistic_methods = list(q2_aldex2._visualizer._effect_statistic_functions)
+
+plugin.methods.register_function(
+    function=extract_differences,
+    name=('Extract differentially expressed features'),
+    description=('Extracts differentially expressed features from the output'),
+    inputs={'table': FeatureData[Differential]},
+    parameters={'sig_threshold': Float,
+            'effect_threshold': Float,
+            'difference_threshold': Float,
+            'test': Str % Choices(effect_statistic_methods)
+            },
+    input_descriptions={
+        'table': 'Output from aldex2 calculations'
+    },
+    parameter_descriptions={
+        'sig_threshold': 'Statistical significance cutoff',
+        'effect_threshold': 'Effect size cutoff',
+        'difference_threshold': 'Size of difference cutoff',
+        'test': 'Method of calculating significance, options include `welch` for Welchs T test or `wilcox` for Wilcox rank test.'
+    },
+    outputs=[('differentials', FeatureData[Differential])],
+    output_descriptions={
+        'differentials': 'The estimated per-feature differentials.'
+    }
+)
 
 plugin.visualizers.register_function(
     function=effect_plot,

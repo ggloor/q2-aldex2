@@ -6,6 +6,9 @@ from biom import Table
 import tempfile
 import subprocess
 
+import q2_aldex2
+from q2_aldex2._visualizer import _effect_statistic_functions
+
 
 def run_commands(cmds, verbose=True):
     if verbose:
@@ -54,3 +57,24 @@ def aldex2(table: pd.DataFrame,
 
         summary.index.name = "featureid"
         return summary
+
+def extract_differences(table: pd.DataFrame, sig_threshold: float = 0.1, effect_threshold: float = 1, difference_threshold: float = 1, test: str = 'welch') -> pd.DataFrame:
+
+    # checks to make sure there is no error
+    # ensure max or min, depending on case
+
+    effect_statistic_function = _effect_statistic_functions[test]
+
+    if sig_threshold < table[effect_statistic_function].min():
+        raise ValueError("You have selected a significance threshold that is lower than minimum Q score (-p--sig-threshold). Select a higher threshold.")
+
+    if effect_threshold > table['effect'].max():
+        raise ValueError("You have selected an effect threshold that exceeds maximum effect size (-p--effect-threshold). Choose a lower threshold, or be aware that there there will be no features in the output.")
+
+    if difference_threshold > table['diff.btw'].max():
+        raise ValueError("You have selected a difference threshold that exceeds maximum difference (-p--difference-threshold). Choose a lower threshold, or be aware that there will be no features in the output.")
+
+    # subset the table if it psases all the threshold
+    differentials_sig = table[(table[effect_statistic_function] <= sig_threshold) & (table['effect'] > effect_threshold) & (table['diff.btw'] > difference_threshold)]
+
+    return differentials_sig
