@@ -83,7 +83,7 @@ write.table(d, "selex.txt", sep = "\t", col.names=TRUE, row.names=FALSE, quote =
 metadata <- data.frame(sampleid = colnames(d[,2:15]), conds = c(rep("NS", 7), rep("S", 7)))
 
 # write it to file
-write.table(metadata, "metadata.txt", sep = "\t", col.names=TRUE, row.names=FALSE, quote = FALSE)
+write.table(metadata, "selex_metadata.txt", sep = "\t", col.names=TRUE, row.names=FALSE, quote = FALSE)
 
 #exit R
 
