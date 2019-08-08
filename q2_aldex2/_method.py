@@ -87,6 +87,6 @@ def extract_differences(table: pd.DataFrame, sig_threshold: float = 0.1, effect_
         raise ValueError("You have selected a difference threshold that exceeds maximum difference (-p--difference-threshold). Choose a lower threshold, or be aware that there will be no features in the output.")
 
     # subset the table if it psases all the threshold
-    differentials_sig = table[(table[effect_statistic_function] <= sig_threshold) & (table['effect'] > effect_threshold) & (table['diff.btw'] > difference_threshold)]
+    differentials_sig = table[(table[effect_statistic_function] <= sig_threshold) & (abs(table['effect']) > effect_threshold) & (abs(table['diff.btw']) > difference_threshold)]
 
     return differentials_sig
