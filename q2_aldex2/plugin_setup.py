@@ -58,7 +58,7 @@ effect_statistic_methods = list(q2_aldex2._visualizer._effect_statistic_function
 plugin.methods.register_function(
     function=extract_differences,
     name=('Extract differentially expressed features'),
-    description=('Extracts differentially expressed features from the output'),
+    description=('Extracts differentially expressed features from the aldex2 differentials output'),
     inputs={'table': FeatureData[Differential]},
     parameters={'sig_threshold': Float,
             'effect_threshold': Float,
