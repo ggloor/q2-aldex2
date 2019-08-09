@@ -16,32 +16,40 @@ TEMPLATES = pkg_resources.resource_filename('q2_aldex2', 'assets')
 # this is used for 'test' parameters
 _effect_statistic_functions = {'welch': 'we.eBH', 'wilcox': 'wi.eBH'}
 
-def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, test: str = 'welch') -> None:
+def effect_plot(output_dir: str,
+                table: pd.DataFrame,
+                threshold: float = 0.1,
+                test: str = 'welch') -> None:
 
         # ensure there is no issues with the input
         try:
             effect_statistic_function = _effect_statistic_functions[test]
         except KeyError:
-            raise ValueError('Unknown effect statistic method %s. The available '
-                         'options are %s.' %
-                         (method, ', '.join(_effect_statistic_functions.keys())))
+            raise ValueError('Unknown effect statistic method %s. '
+            'The available options are %s.' %
+                    (method, ', '.join(_effect_statistic_functions.keys())))
 
         # base effect plot to build on
         plt.scatter(x="diff.win", y="diff.btw", data=table, color="grey", s = 6)
 
-        # get maximum value of diff.btw to dynamically lengththen effect size line
+        # get maximum value of diff.btw to dynamically
+        # lengthen the effect size line
         btw_max = table['diff.win'].max()
 
-        # use the test that was input as a parameter by taking column from the dict
+        # use the test that was input as a parameter by
+        # taking column from the dict
         # subset features by cutoff
         called = table[effect_statistic_function] <= threshold
 
         # plot positive and negative effect size line
-        plt.plot([0, btw_max], [0,btw_max], color = "grey", linestyle='dashed', linewidth=1)
-        plt.plot([0,btw_max], [0,-btw_max], color = "grey", linestyle='dashed', linewidth=1)
+        plt.plot([0, btw_max], [0,btw_max], color = "grey",
+                linestyle='dashed', linewidth=1)
+        plt.plot([0,btw_max], [0,-btw_max], color = "grey",
+                linestyle='dashed', linewidth=1)
 
         # colour for significant points
-        plt.scatter(x="diff.win", y="diff.btw", data=table[called], color="red", s = 6)
+        plt.scatter(x="diff.win", y="diff.btw", data=table[called],
+                    color="red", s = 6)
 
         # change titles and labels
         plt.suptitle('Effect plot')
@@ -59,7 +67,8 @@ def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, te
         plt.scatter(x="rab.all", y="diff.btw", data=table, color="grey", s = 6)
 
         # colour for significant points
-        plt.scatter(x="rab.all", y="diff.btw", data=table[called], color="red", s = 6)
+        plt.scatter(x="rab.all", y="diff.btw", data=table[called],
+                    color="red", s = 6)
 
         # change titles and labels
         plt.suptitle('MA plot')
@@ -77,7 +86,8 @@ def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, te
         plt.scatter(x="diff.btw", y="we.eBH", data=table, color="grey", s = 6)
 
         # colour for significant points
-        plt.scatter(x="diff.btw", y="we.eBH", data=table[called], color="red", s = 6)
+        plt.scatter(x="diff.btw", y="we.eBH", data=table[called],
+                    color="red", s = 6)
 
         # change titles and labels
         plt.suptitle('Volcano plot')
@@ -94,7 +104,9 @@ def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, te
         plt.ylim([minimum, maximum])
 
         # plot line where cutoff is located
-        plt.plot([table["diff.btw"].min(), table["diff.btw"].max()], [threshold,threshold], color = "grey", linestyle='dashed', linewidth=1)
+        plt.plot([table["diff.btw"].min(), table["diff.btw"].max()],
+                [threshold,threshold], color = "grey", linestyle='dashed',
+                linewidth=1)
 
         plt.savefig(img_volcano)
 
@@ -103,10 +115,12 @@ def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, te
         plt.close()
 
         # base effect plot to build on
-        plt.scatter(x="effect", y="we.eBH", data=table, color="grey", s = 6)
+        plt.scatter(x="effect", y="we.eBH", data=table,
+                    color="grey", s = 6)
 
         # colour for significant points
-        plt.scatter(x="effect", y="we.eBH", data=table[called], color="red", s = 6)
+        plt.scatter(x="effect", y="we.eBH", data=table[called],
+                    color="red", s = 6)
 
         # change titles and labels
         plt.suptitle('Effect size vs q score')
@@ -121,7 +135,9 @@ def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, te
         plt.ylim([minimum, maximum])
 
         # plot line where cutoff is located
-        plt.plot([table["effect"].min(), table["effect"].max()], [threshold,threshold], color = "grey", linestyle='dashed', linewidth=1)
+        plt.plot([table["effect"].min(), table["effect"].max()],
+                    [threshold,threshold], color = "grey",
+                    linestyle='dashed', linewidth=1)
 
         img_effect = os.path.join(output_dir, "effect_q_plot.png")
 
@@ -131,4 +147,4 @@ def effect_plot(output_dir: str, table: pd.DataFrame, threshold: float = 0.1, te
         index = os.path.join(TEMPLATES, 'index.html')
 
         # plot_name displays whether effect or MA
-        q2templates.render(index, output_dir, context={'plot_name': type})
+        q2templates.render(index, output_dir, context={'plot_name': test})

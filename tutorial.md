@@ -12,10 +12,10 @@ qiime feature-table filter-samples \
   --o-filtered-table gut-table.qza
 ```
 
-The next step will be to run ALDEx2. The full pipeline is implemented in the `aldex2` function The input is the `FeatureTable[Frequency]`, as well as a metadata file. The metadata file is necessary for defining the different groups you will be testing. For this tutorial, the groups are identified by the subject column from the metadata file. ALDEx2 automatically adds a pseudocount to remove zeros from the data, and filters any samples with 0 reads.
+The next step will be to run ALDEx2. The full pipeline is implemented in the `aldex2` function The input is the `FeatureTable[Frequency]`, as well as a metadata file. The metadata file is necessary for defining the different groups you will be testing. For this tutorial, the groups are identified by the subject column from the metadata file. ALDEx2 automatically adds a prior [(see Results here for more technical details of the prior)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067019) to remove zeros from the data, and filters any samples with 0 reads.
 
 ```
-qiime aldex2 aldex2 --i-table gut-table.qza --m-metadata-file gut-metadata.tsv --p-condition subject --output-dir gut-test
+qiime aldex2 aldex2 --i-table gut-table.qza --m-metadata-file sample-metadata.tsv --p-condition subject --output-dir gut-test
 ```
 
 The output artifact is `differentials.qza`, which contains a summary of the ALDEx2 output (difference, dispersion, effect, q-score, etc). From this artifact, we can visualize and extract the differentially abundant features. It is important to visualize the size of the difference between conditions (difference) as well as the size of the difference within conditions (dispersion) to capture the full context of the within-group variation. One feature may appear as differentially expressed if it has a very small dispersion and slightly larger difference, while another may have a large difference, but an even larger dispersion. These are both cases where caution should be used when calling differentially expressed features.
@@ -48,15 +48,12 @@ qiime tools export --input-path gut-test/sig_gut.qza --output-path differentiall
 
 This tutorial is meant for users starting from scratch.
 
-Install qiime2 and activate your conda environment ([see qiime2 Getting Start](https://docs.qiime2.org/2019.7/getting-started/)).
+Install qiime2 and activate your conda environment ([see qiime2 Getting Started](https://docs.qiime2.org/2019.7/getting-started/)).
 
 Install this github repo:
 ```
 # clone to working directory for qiime
-git clone https://github.com/dgiguer/q2-aldex2 ./q2-aldex2
-cd ./q2-aldex2
-pip install -e .
-cd ../
+pip install git+https://github.com/dgiguer/q2-aldex2
 ```
 
 For this, we will use the example dataset provided in the ALDEx2 R package. For users of R, this a good example of how to prepare your counts table and metadata for importing into `qiime2`.
@@ -113,7 +110,7 @@ qiime tools view selex_effect.qzv
 
 ```
 
-This should generate several effect plots. To extract the differentially abundant points, use `extract-differences` and look at the `differentials` file by extracting it
+This should generate several effect plots. To extract the differentially abundant features, use `extract-differences` and look at the `differentials` file by extracting it
 
 ```
 qiime aldex2 extract-differences --i-table aldex_output/differentials.qza --o-differentials aldex_output/selex_significant_features --p-sig-threshold 0.1 --p-effect-threshold 0 --p-difference-threshold 0

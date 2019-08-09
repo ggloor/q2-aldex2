@@ -58,7 +58,8 @@ effect_statistic_methods = list(q2_aldex2._visualizer._effect_statistic_function
 plugin.methods.register_function(
     function=extract_differences,
     name=('Extract differentially expressed features'),
-    description=('Extracts differentially expressed features from the aldex2 differentials output'),
+    description=('Extracts differentially expressed features from the'
+                'aldex2 differentials output'),
     inputs={'table': FeatureData[Differential]},
     parameters={'sig_threshold': Float,
             'effect_threshold': Float,
@@ -72,7 +73,8 @@ plugin.methods.register_function(
         'sig_threshold': 'Statistical significance cutoff',
         'effect_threshold': 'Effect size cutoff',
         'difference_threshold': 'Size of difference cutoff',
-        'test': 'Method of calculating significance, options include `welch` for Welchs T test or `wilcox` for Wilcox rank test.'
+        'test': 'Method of calculating significance, options include '
+        '`welch` for Welchs T test or `wilcox` for Wilcox rank test.'
     },
     outputs=[('differentials', FeatureData[Differential])],
     output_descriptions={
@@ -90,14 +92,10 @@ plugin.visualizers.register_function(
     },
     parameter_descriptions={
         'threshold': 'Statistical significance cutoff',
-        'test': 'Method of calculating significance, options include `welch` for Welchs T test or `wilcox` for Wilcox rank test.'
+        'test': 'Method of calculating significance, options include '
+        '`welch` for Welchs T test or `wilcox` for Wilcox rank test.'
     },
     name='Effect plots',
-    description=('Visually explore the relationship between difference between groups and within groups')
+    description=('Visually explore the relationship between difference'
+                'between groups and within groups')
 )
-
-
-
-
-
-# TODO: Need to add a visualizer to summarize the aldex2 results

@@ -76,17 +76,27 @@ def extract_differences(table: pd.DataFrame, sig_threshold: float = 0.1, effect_
     effect_statistic_function = _effect_statistic_functions[test]
 
     if sig_threshold < table[effect_statistic_function].min():
-        raise ValueError("You have selected a significance threshold that is lower than minimum Q score (-p--sig-threshold). Select a higher threshold.")
+        raise ValueError("You have selected a significance threshold that "
+        "is lower than minimum Q score (-p--sig-threshold). Select a "
+        "higher threshold.")
 
     # absolute values needed for effect or difference to see change in either
     # condition
     if effect_threshold > abs(table['effect']).max():
-        raise ValueError("You have selected an effect threshold that exceeds maximum effect size (-p--effect-threshold). Choose a lower threshold, or be aware that there there will be no features in the output.")
+        raise ValueError("You have selected an effect threshold that exceeds "
+        "maximum effect size (-p--effect-threshold). Choose a lower "
+        "threshold, or be aware that there there will be no features "
+        "in the output.")
 
     if difference_threshold > abs(table['diff.btw']).max():
-        raise ValueError("You have selected a difference threshold that exceeds maximum difference (-p--difference-threshold). Choose a lower threshold, or be aware that there will be no features in the output.")
+        raise ValueError("You have selected a difference threshold that "
+        "exceeds maximum difference (-p--difference-threshold). Choose a "
+        "lower threshold, or be aware that there will be no features in "
+        "the output.")
 
     # subset the table if it psases all the threshold
-    differentials_sig = table[(table[effect_statistic_function] <= sig_threshold) & (abs(table['effect']) > effect_threshold) & (abs(table['diff.btw']) > difference_threshold)]
+    differentials_sig = table[(table[effect_statistic_function]
+    <= sig_threshold) & (abs(table['effect']) > effect_threshold) &
+    (abs(table['diff.btw']) > difference_threshold)]
 
     return differentials_sig
