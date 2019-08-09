@@ -13,8 +13,8 @@ denom <- args[[6]]
 output <- args[[7]]
 
 # load data ---------------------------------------------------------------
-map <- read.delim(inp.metadata.path, row.names=1)
-otu <- read.delim(inp.abundances.path, row.names=1)
+map <- read.delim(inp.metadata.path, check.names=FALSE, row.names=1)
+otu <- read.delim(inp.abundances.path, check.names=FALSE, row.names=1)
 
 # load libraries ----------------------------------------------------------
 suppressWarnings(library(ALDEx2))
