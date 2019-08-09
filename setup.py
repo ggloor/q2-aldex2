@@ -24,7 +24,7 @@ setup(
     },
     scripts=['q2_aldex2/assets/run_aldex2.R'],
     package_data={
-        "q2_aldex2": ['citations.bib'],
+        "q2_aldex2": ['assets/index.html', 'citations.bib'],
     },
     zip_safe=False,
 )
