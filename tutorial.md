@@ -15,7 +15,7 @@ qiime feature-table filter-samples \
 The next step will be to run ALDEx2. The full pipeline is implemented in the `aldex2` function The input is the `FeatureTable[Frequency]`, as well as a metadata file. The metadata file is necessary for defining the different groups you will be testing. For this tutorial, the groups are identified by the subject column from the metadata file. ALDEx2 automatically adds a prior [(see Results here for more technical details of the prior)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067019) to remove zeros from the data, and filters any samples with 0 reads.
 
 ```
-qiime aldex2 aldex2 --i-table gut-table.qza --m-metadata-file sample-metadata.tsv --p-condition subject --output-dir gut-test
+qiime aldex2 aldex2 --i-table gut-table.qza --m-metadata-file sample-metadata.tsv --m-metadata-column subject --output-dir gut-test
 ```
 
 The output artifact is `differentials.qza`, which contains a summary of the ALDEx2 output (difference, dispersion, effect, q-score, etc). From this artifact, we can visualize and extract the differentially abundant features. It is important to visualize the size of the difference between conditions (difference) as well as the size of the difference within conditions (dispersion) to capture the full context of the within-group variation. One feature may appear as differentially expressed if it has a very small dispersion and slightly larger difference, while another may have a large difference, but an even larger dispersion. These are both cases where caution should be used when calling differentially expressed features.
@@ -99,7 +99,7 @@ qiime tools import --input-path selex.hdf5 --type FeatureTable[Frequency] --inpu
 
 # conds is title of column in metadata to be used as experimental conditions
 # this is the column used to decide which group each sample is in.
-qiime aldex2 aldex2 --i-table selex-table.qza --m-metadata-file selex_metadata.txt --p-condition conds --output-dir aldex_output
+qiime aldex2 aldex2 --i-table selex-table.qza --m-metadata-file selex_metadata.txt --m-metadata-column conds --output-dir aldex_output
 
 # p is effect plot or MA plot. currently only effect plot is available.
 qiime aldex2 effect-plot --i-table aldex_output/differentials.qza --p-type effect --o-visualization selex_effect

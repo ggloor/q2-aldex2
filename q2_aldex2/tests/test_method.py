@@ -125,15 +125,22 @@ class TestAldex2(unittest.TestCase):
         metadata.index.name = 'sampleid'
 
         table = rel_table
-        metadata = qiime2.Metadata(metadata)
         condition = 'labels'
+        # Make sure that pandas treats the condition column as categorical, and
+        # not numeric (since the "labels" are just ints, pandas infers this as
+        # a numeric column) -- solution from
+        # https://stackoverflow.com/a/22006514/10730311
+        metadata[condition] = metadata[condition].astype(str)
+        # metadata[condition] is just a pandas Series, which we can use to
+        # create a qiime2.CategoricalMetadataColumn -- solution from
+        # https://github.com/qiime2/q2-composition/blob/master/q2_composition/tests/test_ancom.py#L34
+        metadata = qiime2.CategoricalMetadataColumn(metadata[condition])
         mc_samples = 128
         test = 't'
         denom = 'all'
 
         # TODO : allow for summary type
-        diff = aldex2(table, metadata,
-                      condition, mc_samples, test, denom)
+        diff = aldex2(table, metadata, mc_samples, test, denom)
 
         res = pearsonr(diff.values.ravel(),
                        ground_truth.categorical.values.ravel())
