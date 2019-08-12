@@ -1,12 +1,9 @@
 import os
 import qiime2
-import numpy as np
 import pandas as pd
-from biom import Table
 import tempfile
 import subprocess
 
-import q2_aldex2
 from q2_aldex2._visualizer import _effect_statistic_functions
 
 

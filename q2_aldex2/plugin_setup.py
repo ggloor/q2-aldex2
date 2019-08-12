@@ -1,7 +1,5 @@
-import qiime2
-from qiime2.plugin import (Str, Int, Float, Choices, Citations,
-                           Metadata, Categorical, Plugin)
-from q2_types.feature_table import FeatureTable, Frequency, Composition
+from qiime2.plugin import Str, Int, Float, Choices, Citations, Metadata, Plugin
+from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.feature_data import FeatureData, Differential
 
 import q2_aldex2

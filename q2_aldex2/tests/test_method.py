@@ -1,10 +1,7 @@
 import qiime2
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.utils import check_random_state
-from biom.util import biom_open
-from biom import Table
 from scipy.stats import pearsonr
 import unittest
 from q2_aldex2._method import aldex2
