@@ -115,7 +115,7 @@ This should generate several effect plots. To extract the differentially abundan
 ```
 qiime aldex2 extract-differences --i-table aldex_output/differentials.qza --o-differentials aldex_output/selex_significant_features --p-sig-threshold 0.1 --p-effect-threshold 0 --p-difference-threshold 0
 
-qiime tools extract --input-pathaldex_output/selex_significant_features.qza --output-path differentially-expressed-features
+qiime tools extract --input-path aldex_output/selex_significant_features.qza --output-path differentially-expressed-features
 ```
 
 Voila!
