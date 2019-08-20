@@ -1,12 +1,9 @@
 import os
 import qiime2
-import numpy as np
 import pandas as pd
-from biom import Table
 import tempfile
 import subprocess
 
-import q2_aldex2
 from q2_aldex2._visualizer import _effect_statistic_functions
 
 
@@ -25,16 +22,18 @@ def run_commands(cmds, verbose=True):
 
 
 def aldex2(table: pd.DataFrame,
-           metadata: qiime2.Metadata,
-           condition: str,
+           metadata: qiime2.CategoricalMetadataColumn,
            mc_samples: int = 128,
            test: str = 't',
            denom: str = 'all') -> pd.DataFrame:
 
-    # create dataframe of the metadata
-    meta = metadata.to_dataframe()
+    # create series from the metadata column
+    meta = metadata.to_series()
 
-    # filter it so only the samples present in data are used
+    # The condition is just the only column in the passed metadata column
+    condition = metadata.name
+
+    # filter the metadata so only the samples present in the table are used
     # this also reorders it for the correct condition selection
     # it has to be re ordered for aldex to correctly input the conditions
     meta = meta.loc[list(table.index)]
@@ -46,8 +45,11 @@ def aldex2(table: pd.DataFrame,
         map_fp = os.path.join(temp_dir_name, 'input.map.txt')
         summary_fp = os.path.join(temp_dir_name, 'output.summary.txt')
 
-        table.to_csv(biom_fp, sep='\t')
-        meta.to_csv(map_fp, sep='\t')
+        # Need to manually specify header=True for Series (i.e. "meta"). It's
+        # already the default for DataFrames (i.e. "table"), but we manually
+        # specify it here anyway to alleviate any potential confusion.
+        table.to_csv(biom_fp, sep='\t', header=True)
+        meta.to_csv(map_fp, sep='\t', header=True)
 
         cmd = ['run_aldex2.R', biom_fp, map_fp, condition, mc_samples,
                test, denom, summary_fp]

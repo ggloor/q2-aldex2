@@ -1,13 +1,8 @@
 import os
-import qiime2
-import numpy as np
 import pandas as pd
 import q2templates
 import pkg_resources
 import matplotlib.pyplot as plt
-from biom import Table
-import tempfile
-import subprocess
 
 
 TEMPLATES = pkg_resources.resource_filename('q2_aldex2', 'assets')

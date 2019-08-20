@@ -1,7 +1,7 @@
-import qiime2
-from qiime2.plugin import (Str, Int, Float, Choices, Citations,
-                           Metadata, Categorical, Plugin)
-from q2_types.feature_table import FeatureTable, Frequency, Composition
+from qiime2.plugin import (
+    Str, Int, Float, Choices, Citations, Plugin, MetadataColumn, Categorical
+)
+from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.feature_data import FeatureData, Differential
 
 import q2_aldex2
@@ -28,27 +28,23 @@ plugin.methods.register_function(
     name=('Analysis Of Differential Abundance'),
     description=('Performs log-ratio transformation and statistical testing'),
     inputs={'table': FeatureTable[Frequency]},
-    # TODO: will need to provide restrictions on input parameters.
-    # see q2-composition for examples on how to do this
-    # https://github.com/qiime2/q2-composition/blob/master/q2_composition/plugin_setup.py#L48
-    parameters={'metadata': Metadata,
-                'condition': Str,
+    parameters={'metadata': MetadataColumn[Categorical],
                 'mc_samples': Int,
-                'test': Str,
-                'denom': Str},
+                'test': Str % Choices(['t', 'glm']),
+                'denom': Str % Choices(['all', 'iqlr'])},
     outputs=[('differentials', FeatureData[Differential])],
     input_descriptions={
-        'table': 'The feature table of abundances.'
+        'table': 'The feature table of abundances'
     },
     parameter_descriptions={
-        'metadata': 'Sample metadata',
-        'condition': 'Experimental descriptors to group samples',
+        'metadata': 'The "condition": this column will be used as an '
+                    'experimental descriptor to group samples',
         'mc_samples': 'The number of monte carlo samples to be used',
-        'test': 'The statistical test to run, options include `t`, or `glm`',
-        'denom': 'The features used to decide a reference frame.'
+        'test': 'The statistical test to run',
+        'denom': 'The features used to decide a reference frame'
     },
     output_descriptions={
-        'differentials': 'The estimated per-feature differentials.'
+        'differentials': 'The estimated per-feature differentials'
     }
 )
 
@@ -61,11 +57,12 @@ plugin.methods.register_function(
     description=('Extracts differentially expressed features from the'
                 'aldex2 differentials output'),
     inputs={'table': FeatureData[Differential]},
-    parameters={'sig_threshold': Float,
-            'effect_threshold': Float,
-            'difference_threshold': Float,
-            'test': Str % Choices(effect_statistic_methods)
-            },
+    parameters={
+        'sig_threshold': Float,
+        'effect_threshold': Float,
+        'difference_threshold': Float,
+        'test': Str % Choices(effect_statistic_methods)
+    },
     input_descriptions={
         'table': 'Output from aldex2 calculations'
     },
@@ -92,10 +89,10 @@ plugin.visualizers.register_function(
     },
     parameter_descriptions={
         'threshold': 'Statistical significance cutoff',
-        'test': 'Method of calculating significance, options include '
-        '`welch` for Welchs T test or `wilcox` for Wilcox rank test.'
+        'test': 'Method of calculating significance; options include '
+        "`welch` for Welch's T test or `wilcox` for Wilcox rank test"
     },
     name='Effect plots',
     description=('Visually explore the relationship between difference'
-                'between groups and within groups')
+                 'between groups and within groups')
 )
