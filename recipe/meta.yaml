@@ -1,6 +1,6 @@
 package:
   name: q2-aldex2
-  version: 2019.1
+  version: 0.1.0
 
 source:
   path: ../
