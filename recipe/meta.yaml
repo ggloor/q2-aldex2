@@ -1,0 +1,44 @@
+package:
+  name: q2-aldex2
+  version: 0.1.0
+
+source:
+  path: ../
+
+# make noarch, architecture-independent
+build:
+    noarch: generic
+
+# Add bioconda channel for biom
+extra:
+  channels:
+    - conda-forge
+    - bioconda
+
+requirements:
+
+  build:
+    - python=3.6
+    - setuptools
+
+  run:
+    - python=3.6
+    # QIIME 2 things for the setup
+    - qiime2>=2019.1
+    # Other modules used in the actual code
+    - scikit-bio
+    - pandas
+    - numpy
+    - biom-format
+    - matplotlib
+
+  test:
+    imports:
+      - q2_aldex2
+      - qiime2.plugins.aldex2
+
+
+about:
+  home: https://github.com/ggloor/q2-aldex2
+  license: BSD-3-Clause
+  license_family: BSD
