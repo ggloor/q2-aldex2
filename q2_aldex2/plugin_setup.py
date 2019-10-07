@@ -15,7 +15,7 @@ __version__ = '1.14.1'
 plugin = Plugin(
     name='aldex2',
     version=__version__,
-    website='https://github.com/mortonjt/q2-aldex2',
+    website='https://github.com/ggloor/q2-aldex2',
     package='q2_aldex2',
     description=('Analysis Of Differential Abundance Taking '
                  'Sample Variation Into Account'),
