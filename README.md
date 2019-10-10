@@ -8,7 +8,7 @@ conda install bioconductor-aldex2 -c defaults -c bioconda -c conda-forge
 ```
 
 ```
-pip install git+https://github.com/mortonjt/q2-aldex2.git
+conda install -c dgiguere q2-aldex2
 ```
 
 To look at the command line, type
